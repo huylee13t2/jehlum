@@ -309,7 +309,6 @@
 
 .file-sortable .file-drag-handle {
     cursor: move;
-    cursor: -webkit-grabbing;
     opacity: 1;
 }
 
@@ -481,13 +480,6 @@
 
 .hide-content .kv-file-content {
     display: none;
-}
-
-/* IE 10 fix */
-.btn-file ::-ms-browse {
-    font-size: 10000px;
-    width: 100%;
-    height: 100%;
 }
 
 /* exif orientations */
