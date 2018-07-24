@@ -58,7 +58,6 @@
   line-height: normal;
   text-transform: uppercase;
   width: 140px;
-  webkit-transition: all .3s linear;
   -moz-transition: all .3s linear;
   -ms-transition: all .3s linear;
   -o-transition: all .3s linear;
@@ -449,8 +448,6 @@ select > opation:focus {
   -webkit-transition: all 0.9s ease;
   -moz-transition: all 0.9s ease;
   -ms-transition: all 0.9s ease;
-  -0-transition: all 0.9s ease;
-  transition: all 0.9s ease;
 }
 #new-products .product-item .carousel-thumb .overlay {
   position: absolute;
@@ -490,23 +487,6 @@ select > opation:focus {
   box-shadow: 3px 6px 6px rgba(0, 0, 0, 0.25);
   opacity: 0;
   z-index: 99;
-  -webkit-transform: scale(0.2);
-  -moz-transform: scale(0.2);
-  -ms-transform: scale(0.2);
-  -o-transform: scale(0.2);
-  transform: scale(0.2);
-  -webkit-transition: all .4s ease;
-  -moz-transition: all .4s ease;
-  -ms-transition: all .4s ease;
-  -o-transition: all .4s ease;
-  transition: all .4s ease;
-}
-#new-products .product-item .carousel-thumb:hover img {
-  -webkit-transform: scale(0.9);
-  -moz-transform: scale(0.9);
-  -ms-transform: scale(0.9);
-  -0-transform: scale(0.9);
-  transform: scale(0.9);
 }
 #new-products .product-item .carousel-thumb:hover {
   border-color: #3498db;
@@ -514,15 +494,6 @@ select > opation:focus {
 #new-products .product-item .carousel-thumb:hover .overlay {
   opacity: 1;
   visibility: visible;
-}
-#new-products .product-item .carousel-thumb:hover i {
-  opacity: 1;
-  visibility: visible;
-  -webkit-transform: scale(1);
-  -moz-transform: scale(1);
-  -ms-transform: scale(1);
-  -0-transform: scale(1);
-  transform: scale(1);
 }
 #new-products .product-item .item-name {
   font-size: 14px;
@@ -1096,7 +1067,7 @@ footer .menu li a:hover {
   margin-top: 10px;
   margin-bottom: 30px;
   width: auto;
-  font-size: 13;
+  font-size: 13px;
 }
 /* ==========================================================================
    Pricing Table Style
