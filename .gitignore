@@ -3,5 +3,3 @@ venv
 staticfiles
 .env
 *.sqlite3
-app/__pycache__
-app/migrations
