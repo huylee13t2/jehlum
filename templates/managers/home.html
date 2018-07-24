@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+
+<div id="content">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-3 page-sideabr">
+				{% include 'managers/left-bar.html' %}
+			</div>
+			<div class="col-sm-9 page-content">
+				<div class="inner-box">
+					{% block sub-content %}
+
+					{% endblock %}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

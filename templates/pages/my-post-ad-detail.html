@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block content %}
+
+<div id="content">
+	<div class="container">
+		<div class="row">
+			<div class="product-info">
+				<div class="col-md-8">
+					<div class="box">
+						<h2 class="title-2"><strong>Ad Details</strong></h2>
+						<div class="row">
+							<div class="ads-details-info col-md-8">
+								<h3>{{ item.title }}</h3>
+								<p><strong>Description: </strong>{{ item.description }}</p>
+								<div>
+									<img src="../../../media/{{ item.featured_image.name }}" style="width: 100%;">
+								</div>
+							</div>
+							<div class="col-md-4">
+								<aside class="panel panel-body panel-details">
+									<ul>
+										<li>
+											<p class=" no-margin "><strong>Price:</strong> $ {{ item.price_salary }}</p>
+										</li>
+										<li>
+											<p class="no-margin"><strong>Category:</strong> <a href="#">{{ item.category.title }}</a></p>
+										</li>
+										<li>
+											<p class="no-margin"><strong>Location:</strong> <a href="#">{{ item.location.title }}</a></p>
+										</li>
+									</ul>
+								</aside>
+								<div class="ads-action">
+									<ul class="list-border">
+										<li>
+											<a href="#"> <i class=" fa fa-phone"></i> {{ item.seller.phone_number }} </a>
+										</li>
+										<li>
+											<p>Status: 
+												{% if item.is_active %}
+												<span class="label label-success">Confimred</span>
+												{% else %}
+												<span class="label label-danger">Unconfimred</span>
+											{% endif %}</p>
+										</li>
+										<li>
+											<a href="#">Posted by <i class=" fa fa-user"></i> {{ item.created_by.username }}</a>
+										</li>
+										<li>
+											<a href="#"> <i class=" fa fa-heart"></i> Save ad</a>
+										</li>
+										<li>
+											<a href="#"> <i class="fa fa-share-alt"></i> Share </a>
+											<div class="social-link">
+												<a class="twitter" target="_blank" data-original-title="twitter" href="#" data-toggle="tooltip" data-placement="top"><i class="fa fa-twitter"></i></a>
+												<a class="facebook" target="_blank" data-original-title="facebook" href="#" data-toggle="tooltip" data-placement="top"><i class="fa fa-facebook"></i></a>
+												<a class="google" target="_blank" data-original-title="google-plus" href="#" data-toggle="tooltip" data-placement="top"><i class="fa fa-google"></i></a>
+												<a class="linkedin" target="_blank" data-original-title="linkedin" href="#" data-toggle="tooltip" data-placement="top"><i class="fa fa-linkedin"></i></a>
+											</div>
+										</li>
+									</ul>
+								</div>
+							</div>
+							<div class="col-md-12" style="border-top: 1px solid #ddd; padding-top: 15px;">
+								{% if item.is_active == False %}
+								<a href="/managers/post-ad-accept/{{ item.id }}?action=accept" class="btn btn-success"><i class="fa fa-check"></i>Accept</a>
+								{% endif %}
+								<a href="/managers/post-ad-accept/post-ad/{{ item.id }}?action=delete" class="btn btn-danger pull-right"><i class="fa fa-trash"></i>Delete</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-4">
+					<div class="inner-box">
+						<div class="widget-title">
+							<h4>Advertisement</h4>
+						</div>
+						<img src="{% static './assets/img/img1.jpg' %}" alt="">
+					</div>
+					<div class="col-xs-12">
+						<div class="features-box wow fadeInDownQuick animated" data-wow-delay="0.3s" style="visibility: visible;-webkit-animation-delay: 0.3s; -moz-animation-delay: 0.3s; animation-delay: 0.3s;">
+							<div class="features-icon">
+								<i class="lnr lnr-star">
+								</i>
+							</div>
+							<div class="features-content">
+								<h4>
+									Fraud Protection
+								</h4>
+								<p>
+									Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quo aut magni perferendis repellat rerum assumenda facere.
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-12">
+						<div class="features-box wow fadeInDownQuick animated" data-wow-delay="0.6s" style="visibility: visible;-webkit-animation-delay: 0.6s; -moz-animation-delay: 0.6s; animation-delay: 0.6s;">
+							<div class="features-icon">
+								<i class="lnr lnr-chart-bars"></i>
+							</div>
+							<div class="features-content">
+								<h4>
+									No Extra Fees
+								</h4>
+								<p>
+									Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quo aut magni perferendis repellat rerum assumenda facere.
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-12">
+						<div class="features-box wow fadeInDownQuick animated" data-wow-delay="0.9s" style="visibility: visible;-webkit-animation-delay: 0.9s; -moz-animation-delay: 0.9s; animation-delay: 0.9s;">
+							<div class="features-icon">
+								<i class="lnr lnr-spell-check"></i>
+							</div>
+							<div class="features-content">
+								<h4>
+									Verified Data
+								</h4>
+								<p>
+									Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quo aut magni perferendis repellat rerum assumenda facere.
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-12">
+						<div class="features-box wow fadeInDownQuick animated" data-wow-delay="0.9s" style="visibility: visible;-webkit-animation-delay: 0.9s; -moz-animation-delay: 0.9s; animation-delay: 0.9s;">
+							<div class="features-icon">
+								<i class="lnr lnr-smile"></i>
+							</div>
+							<div class="features-content">
+								<h4>
+									Friendly Return Policy
+								</h4>
+								<p>
+									Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quo aut magni perferendis repellat rerum assumenda facere.
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

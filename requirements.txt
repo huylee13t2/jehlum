@@ -1,0 +1,6 @@
+Django
+dj-database-url
+django-heroku
+Pillow
+psycopg2
+whitenoise

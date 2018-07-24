@@ -1,0 +1,69 @@
+{% load staticfiles %}
+
+<aside>
+	<div class="inner-box">
+		<div class="user-panel-sidebar">
+			<div class="collapse-box">
+				<h5 class="collapset-title no-border">Manager Ads <a aria-expanded="true" class="pull-right" data-toggle="collapse" href="#manager-ads"><i class="fa fa-angle-down"></i></a></h5>
+				<div aria-expanded="true" id="manager-ads" class="panel-collapse collapse in">
+					<ul class="acc-list">
+						<li>
+							<a href="/managers/all-post-ads/"><i class="fa fa-align-justify"></i> All Post Ads</a>
+						</li>
+						<li>
+							<a href="/managers/post-ad-accept/"><i class="fa fa-check-circle"></i> Post Ads Wait Accept</a>
+						</li>
+						<li>
+							<a href="/managers/post-ad-create/"><i class="fa fa-plus"></i> Create Ad</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="collapse-box">
+				<h5 class="collapset-title">Manager Categories <a aria-expanded="true" class="pull-right" data-toggle="collapse" href="#manager-categories"><i class="fa fa-angle-down"></i></a></h5>
+				<div aria-expanded="true" id="manager-categories" class="panel-collapse collapse">
+					<ul class="acc-list">
+						<li>
+							<a href="#"><i class="fa fa-plus"></i> Create Category</a>
+						</li>
+						<li>
+							<a href="/post-ad"><i class="fa fa-bars"></i> All Category</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="collapse-box">
+				<h5 class="collapset-title">Manager Location <a aria-expanded="true" class="pull-right" data-toggle="collapse" href="#manager-location"><i class="fa fa-angle-down"></i></a></h5>
+				<div aria-expanded="true" id="manager-location" class="panel-collapse collapse">
+					<ul class="acc-list">
+						<li>
+							<a href="#"><i class="fa fa-plus"></i> Create Location</a>
+						</li>
+						<li>
+							<a href="/post-ad"><i class="fa fa-bars"></i> All Location</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="collapse-box">
+				<h5 class="collapset-title">Manager Rss Link <a aria-expanded="true" class="pull-right" data-toggle="collapse" href="#manager-rss-link"><i class="fa fa-angle-down"></i></a></h5>
+				<div aria-expanded="true" id="manager-rss-link" class="panel-collapse collapse">
+					<ul class="acc-list">
+						<li>
+							<a href="#"><i class="fa fa-plus"></i> Create Rss Link</a>
+						</li>
+						<li>
+							<a href="/post-ad"><i class="fa fa-bars"></i> All Rss Link</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="inner-box">
+		<div class="widget-title">
+			<h4>Advertisement</h4>
+		</div>
+		<img src="{% static './assets/img/img1.jpg' %}" alt="">
+	</div>
+</aside>

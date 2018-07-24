@@ -1,0 +1,179 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+
+<section id="content">
+    <div class="container">
+        <form method="POST" action="/post-ad/" enctype="multipart/form-data">
+            {% if message != "" %}
+            <div class="alert alert-success">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true"><i class="fa fa-close"></i></span>
+                </button>
+            </div>
+            {% endif %}
+            {% if msg_error != "" %}
+            <div class="alert alert-danger">
+                {{ msg_error }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true"><i class="fa fa-close"></i></span>
+                </button>
+            </div>
+            {% endif %}
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-sm-12 col-md-12 box" style="overflow: hidden; display: inline-block;">
+                    <div class="page-ads box">
+                        <h2 class="title-2">Post A Free Classified Ad</h2>
+                        <div class="row search-bar mb30 red-bg">
+                            <div class="advanced-search">
+                                <div class="col-md-6 col-sm-12 search-col">
+                                    <div class="input-group-addon search-category-container">
+                                        <label class="styled-select">
+                                            <span class="hidden-sm hidden-xs">Category </span>
+                                            <div class="btn-group bootstrap-select dropdown-product">
+                                                <select class="dropdown-product selectpicker" name="category" tabindex="-98">
+                                                    {% for category in categories %}
+                                                    <option value="{{ category.id }}">
+                                                        {{ category.title }}
+                                                    </option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-12 search-col">
+                                    <div class="input-group-addon search-category-container">
+                                        <label class="styled-select location-select">
+                                            <span class="hidden-sm hidden-xs">Location </span>
+                                            <div class="btn-group bootstrap-select dropdown-product">
+                                                <select class="dropdown-product selectpicker" name="location" tabindex="-98">
+                                                    {% for location in locations %}
+                                                    <option value="{{ location.id }}">
+                                                        {{ location.title }}
+                                                    </option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+                                <!-- <div class="col-md-4 col-sm-12 search-col">
+                                    <div class="input-group-addon search-category-container">
+                                        <label class="styled-select default-select">
+                                            <span class="hidden-sm hidden-xs">Type </span>
+                                            <select class="dropdown-product selectpicker" name="type" tabindex="-98">
+                                                <option value="New York">
+                                                    Sell
+                                                </option>
+                                                <option value="California">
+                                                    Buy
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </label>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group mb30 is-empty" style="margin-top: 15px;">
+                        <label class="control-label">Ad title</label> 
+                        <input class="form-control input-md" name="title" placeholder="Write a suitable title for your ad" required type="text"/> 
+                        <span class="help-block">A great title needs at least 60 characters.</span>
+                        <span class="material-input"></span>
+                    </div>
+                    <div class="form-group mb30 is-empty">
+                        <label class="control-label" for="textarea">Describe ad</label>
+                        <textarea class="form-control" id="textarea" name="description" placeholder="Describe what makes your ad unique" rows="4"></textarea>
+                        <span class="material-input"></span>
+                    </div>
+                    <div class="form-group mb30 clearfix">
+                        <label class="control-label" for="textarea">Price / Salary</label>
+                        <div class="form-inline">
+                            <div class="form-group col-md-3 col-sm-5 col-xs-12 is-empty">
+                                <div class="input-group">
+                                    <span class="input-group-addon addon">$</span>
+                                    <input class="form-control" name="price_salary" id="price" placeholder="Item Price" type="text"/>
+                                </div>
+                                <span class="material-input"></span>
+                            </div>
+                            <div class="col-md-2 col-sm-3 col-xs-12 checkbox form-control-static">
+                                <label>
+                                    <input type="checkbox" name="negotiable_price"/>
+                                    <span class="checkbox-material"></span>Negotiable
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <h2 class="title-2">Add Images to Your Ad</h2>
+                    <div class="form-group">
+                        <label class="control-label">Featured Image</label> 
+                        <input class="form-control" type="file" name="featured_image" style="position: relative; opacity: unset;"/>
+                    </div>
+                    <br>
+                    <br>
+                    <label class="control-label">Other Images</label> 
+                    <input class="form-control" type="file" name="other_image" style="position: relative; opacity: unset;"/>
+                    <br>
+                    <input class="form-control" type="file" name="other_image" style="position: relative; opacity: unset;"/>
+                    <p class="help-block">Add up to 4 photos. Use a real image of your product, not catalogs.</p>
+                </div>
+                <div class="col-sm-12 col-md-12 mb30" style="clear: both;"></div>
+                <div class="col-sm-12 col-md-12 box">
+                    <h2 class="title-2">Your Contact Information</h2>
+                    <div class="form-group is-empty">
+                        <label class="control-label" for="textarea">Name</label> 
+                        <input class="form-control" placeholder="Your Name" type="text" name="sell_name"/>
+                        <span class="material-input"></span>
+                    </div>
+                    <div class="form-group is-empty">
+                        <label class="control-label" for="textarea">Email</label> 
+                        <input class="form-control" placeholder="Your Email" type="text" name="sell_email"/>
+                        <span class="material-input"></span>
+                    </div>
+                    <div class="form-group is-empty">
+                        <label class="control-label" for="textarea">Phone Number</label> 
+                        <input class="form-control" placeholder="Phone Number" type="text" name="sel_phone_number"/>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="sell_hide_phone"/>
+                                <small>Hide the phone number on this ads.</small>
+                            </label>
+                        </div>
+                        <span class="material-input"></span>
+                    </div>
+                </div>
+                <div class="col-sm-12 mb30"></div>
+                <div class="col-sm-12 form-group box">
+                    <div class="page-ads">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent sit amet porta eros, eget facilisis arcu. Duis condimentum fermentum enim, ac rutrum erat venenatis vel Morbi pharetra viverra faucibus.</p>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="sell_terms"/>
+                                I agree to the <a href="#">Terms of Use</a>
+                            </label>
+                        </div>
+                        <br>
+                        <button class="btn btn-common" type="submit">Submit for review</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
