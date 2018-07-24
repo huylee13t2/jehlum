@@ -1,4 +1,4 @@
-diango
-dj_database_url
-django_heroku
-pillow
+dj-database-url==0.5.0
+Django==2.0.7
+django-heroku==0.3.1
+Pillow==5.2.0
