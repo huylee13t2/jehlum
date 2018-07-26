@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+
+    <!-- Content section Start --> 
+    <section id="content">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-6 col-sm-offset-4 col-md-4 col-md-offset-4">
+            <div class="page-login-form box">
+                <h3>
+                  Active Email Error!
+                </h3>
+                <a href="/re-send-email/" class="btn btn-common log-btn" style="margin-bottom: 0;">Send mail again</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Content section End --> 
+
+{% endblock %}

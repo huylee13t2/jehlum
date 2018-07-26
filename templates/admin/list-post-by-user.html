@@ -1,4 +1,4 @@
-{% extends 'managers/home.html' %}
+{% extends 'admin/home.html' %}
 
 {% load staticfiles %}
 
@@ -41,7 +41,7 @@
 					</a>
 				</td>
 				<td class="ads-details-td">
-					<h4><a href="/managers/post-ad-accept/{{ item.id }}">{{ item.title }}</a></h4>
+					<h4><a href="/admin/post-ad-accept/{{ item.id }}">{{ item.title }}</a></h4>
 					<p> <strong> Posted On </strong>: {{ item.updated | date:"M d, Y" }} </p>
 					<p> <strong>Visitors </strong>: 221 <strong>Located In:</strong> {{ item.location.title }} </p>
 					<p>By: {{ item.created_by.username }}</p>
@@ -51,7 +51,7 @@
 				</td>
 				<td class="action-td">
 					<!-- <p style="text-align: center; margin-bottom: 7px;"><a class="btn btn-success btn-xs">Accept</a></p> -->
-					<p style="text-align: center;"><a class="btn btn-danger btn-xs" href="/managers/all-post-ads/?action=delete&id={{ item.id }}"> <i class=" fa fa-trash"></i> Remove</a></p>
+					<p style="text-align: center;"><a class="btn btn-danger btn-xs" href="/admin/post-by-user/?action=delete&id={{ item.id }}"> <i class=" fa fa-trash"></i> Remove</a></p>
 				</td>
 			</tr>
 			{% endfor %}

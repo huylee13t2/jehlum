@@ -1,0 +1,103 @@
+{% extends 'managers/index.html' %}
+{% load staticfiles %}
+
+{% block manager-content %}
+
+<div class="product-filter">
+    <div class="grid-list-count">
+        <a class="list switchToGrid active" href="#"><i class="fa fa-list"></i></a>
+        <a class="grid switchToList" href="#"><i class="fa fa-th-large"></i></a>
+    </div>
+    <div class="short-name">
+        <span>Short By</span>
+        <form class="name-ordering" method="post">
+            <label>
+                <select name="order" class="orderby">
+                    <option selected="selected" value="menu-order">Short by</option>
+                    <option value="popularity">Price: Low to High</option>
+                    <option value="popularity">Price: High to Low</option>
+                </select>
+            </label>
+        </form>
+    </div>
+    <div class="Show-item">
+        <span>Show Items</span>
+        <form class="woocommerce-ordering" method="post">
+            <label>
+                <select name="order" class="orderby">
+                    <option selected="selected" value="menu-order">49 items</option>
+                    <option value="popularity">popularity</option>
+                    <option value="popularity">Average ration</option>
+                    <option value="popularity">newness</option>
+                    <option value="popularity">price</option>
+                </select>
+            </label>
+        </form>
+    </div>
+</div>
+
+
+<div class="adds-wrapper">
+    {% for item in list_ad_accept %}
+    <div class="item-list make-list">
+        <div class="col-sm-2 no-padding photobox">
+            <div class="add-image">
+                <a href="/my-ads/{{ item.id }}"><img src="../../media/{{ item.featured_image.name }}" alt=""></a>
+                <span class="photo-count"><i class="fa fa-camera"></i>2</span>
+            </div>
+        </div>
+        <div class="col-sm-7 add-desc-box">
+            <div class="add-details">
+                <h5 class="add-title"><a href="/my-ads/{{ item.id }}">{{ item.title }}</a></h5>
+                <div class="info">
+                    <span class="date">
+                        <i class="fa fa-clock"></i>
+                        {{ item.updated | date:"M d, Y" }}
+                    </span> -
+                    <span class="category">{{ item.category.title }}</span> -
+                    <span class="item-location"><i class="fa fa-map-marker"></i>{{ item.location.title }}</span>
+                </div>
+                <div class="item_desc">
+                    <p>{{ item.description }}</p>
+                </div>
+                <div>
+                    <strong>Status: </strong>
+                    {% if item.is_active %}
+                    <span class="label label-success">Confimred</span>
+                    {% else %}
+                    <span class="label label-danger">Unconfimred</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3 text-right  price-box">
+            <h2 class="item-price"> $ {{ item.price_salary }} </h2>
+            <!-- <a class="btn btn-danger btn-sm"><i class="fa fa-certificate"></i>
+                <span>Top Ads</span>
+            </a>
+            <a class="btn btn-common btn-sm"> <i class="fa fa-eye"></i> <span>215</span>
+            </a> -->
+        </div>
+    </div>
+
+    {% endfor %}
+
+    <div class="pagination-bar">
+        <ul class="pagination">
+            <li class="active"><a href="#">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#"> ...</a></li>
+            <li><a class="pagination-btn" href="#">Next »</a></li>
+        </ul>
+    </div>
+
+    <div class="post-promo text-center">
+        <h2> Do you get anything for sell ? </h2>
+        <h5>Sell your products online FOR FREE. It's easier than you think !</h5>
+        <a href="post-ads.html" class="btn btn-post btn-danger">Post a Free Ad </a>
+    </div>
+</div>
+
+{% endblock %}

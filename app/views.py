@@ -7,6 +7,7 @@ from django.core.mail import send_mail, EmailMessage
 from django.conf import settings
 from app.models import Account, Categories, Location, SellerInformation, AdPost, Ads_Image, BlackList
 from django.db.models import Q
+import random
 
 def base(request):
 	# if not request.user.is_authenticated:
@@ -25,17 +26,30 @@ class Login(View):
 	def post(self, request):
 		username = request.POST['username']
 		password = request.POST['password']
-		user = authenticate(request, username=username, password=password)
-		if user is not None:
-			login(request, user)
-			return HttpResponsePermanentRedirect('/')
-		else:
-			msg_error = "Please check username or password again!"
+
+		try:
+			obj_account = Account.objects.get(user__username = username)
+
+			if obj_account.is_email_active:
+
+				user = authenticate(request, username=username, password=password)
+				if user is not None:
+					login(request, user)
+					return HttpResponsePermanentRedirect('/')
+				else:
+					msg_error = "Please check username or password again!"
+			else:
+				msg_error = "The account has not been activated. Please check your email and activate your account."
+
+			return render(request, 'user/login/index.html', {'msg_error': msg_error})
+		except:
+			msg_error = "Account does not exist. Please check again or register another account"
 			return render(request, 'user/login/index.html', {'msg_error': msg_error})
 
 
 class Logout(View):
 	def get(self, request):
+		print('********** logout')
 		logout(request)
 		return HttpResponsePermanentRedirect('/login/')
 
@@ -63,12 +77,71 @@ class Register(View):
 		else:
 			new_user = User(username=username, email=username)
 			new_user.set_password(password)
+			# try:
 			new_user.save()
 
-			new_account = Account(user=new_user, role='user')
+			otp_number = random.randint(100000, 999999)
+			new_account = Account(user=new_user, role='user', otp=otp_number)
 			new_account.save()
 
+			email_url_active = str(settings.URL_LOCAL) + 'active-email/?email=' + str(username) + '&otp=' + str(otp_number)
+			email_msg = "Please active account register. Click link " + email_url_active
+			email = EmailMessage('Active Email', email_msg, to=[username]) 
+			email.send()
+
 			return HttpResponsePermanentRedirect('/login/')
+
+			# except:
+			# 	msg_error = 'Email already exists. Please select another email.'
+			# 	return render(request, 'user/register/index.html', {'msg_error': msg_error})
+
+
+class ActiveEmail(View):
+	def get(self, request):
+		msg_error = ""
+		email = request.GET['email']
+		opt = request.GET['otp']
+
+		obj_account = Account.objects.get(user__username=email)
+		if opt == str(obj_account.otp):
+			obj_account.is_email_active = True
+			obj_account.save()
+
+			context = {
+				'msg_error': msg_error
+			}
+
+			return render(request, 'user/active-email-success.html', context)
+		else:
+			msg_error = 'OTP code is incorrect. Please check again.'
+
+			context = {
+				'msg_error': msg_error
+			}
+
+			return render(request, 'user/active-email-error.html', context)
+
+
+class ReSendEmail(View):
+	def get(self, request):
+		return render(request,'user/re-send-mail.html')
+
+	def post(self, request):
+		email = request.POST['email']
+
+		obj_account = Account.objects.get(user__username=email)
+
+		otp_number = random.randint(100000, 999999)
+
+		email_url_active = str(settings.URL_LOCAL) + 'active-email/?email=' + str(email) + '&otp=' + str(otp_number)
+		email_msg = "Please active account register. Click link " + email_url_active
+		email = EmailMessage('Active Email', email_msg, to=[email]) 
+		email.send()
+
+		obj_account.otp = otp_number
+		obj_account.save()
+
+		return render(request, 'user/re-send-mail-done.html')
 
 
 class Home(View):
@@ -86,14 +159,23 @@ class Home(View):
 				}
 
 				return render(request, 'home/index.html', context)
+			elif role == 'admin':
+				context = {
+					'msg_error': msg_error,
+					'role': role,
+				}
+
+				# return render(request, 'pages/admin/home.html', context)
+				return HttpResponsePermanentRedirect('/admin/all-post-ads/')
 			else:
 				context = {
 					'msg_error': msg_error,
 					'role': role,
 				}
 
-				# return render(request, 'pages/managers/home.html', context)
-				return HttpResponsePermanentRedirect('/managers/all-post-ads/')
+				# return render(request, 'pages/admin/home.html', context)
+				return HttpResponsePermanentRedirect('/managers/create-ad/')
+
 		except:
 			context = {
 				'msg_error': msg_error,
@@ -208,7 +290,7 @@ class PostAd(View):
 
 				return render(request, 'pages/post-ad.html', context)
 			else:
-				return HttpResponsePermanentRedirect('/managers/post-ad-create/')
+				return HttpResponsePermanentRedirect('/admin/post-ad-create/')
 				# list_ad_accept = AdPost.objects.filter(is_active=False)
 
 				# context= {
@@ -219,7 +301,7 @@ class PostAd(View):
 				# 	'list_ad_accept': list_ad_accept,
 				# }
 
-				# return render(request, 'managers/post-ad.html', context)
+				# return render(request, 'admin/post-ad.html', context)
 		except:
 			return HttpResponsePermanentRedirect('/login/')
 
@@ -312,13 +394,13 @@ class BrowseAds(View):
 
 # *****************************************************
 # **************** manager post ad ********************
-class ManagerPostAdAccept(View):
+class AdminPostAdAccept(View):
 	def get(self, request):
 		if not request.user.is_authenticated:
 			return HttpResponsePermanentRedirect('/logout/')
 		else:
 			obj_account = Account.objects.get(user=request.user)
-			if obj_account.role == 'user':
+			if obj_account.role != 'admin':
 				return HttpResponsePermanentRedirect('/logout/')
 
 		msg_error= ""
@@ -337,16 +419,16 @@ class ManagerPostAdAccept(View):
 			'role': obj_account.role
 		}
 
-		return render(request, 'managers/post-ad.html', context)
+		return render(request, 'admin/post-ad.html', context)
 
 
-class ManagerPostAdDetail(View):
+class AdminPostAdDetail(View):
 	def get(self, request, pk):
 		if not request.user.is_authenticated:
 			return HttpResponsePermanentRedirect('/logout/')
 		else:
 			obj_account = Account.objects.get(user=request.user)
-			if obj_account.role == 'user':
+			if obj_account.role != 'admin':
 				return HttpResponsePermanentRedirect('/logout/')
 
 		try:
@@ -378,19 +460,19 @@ class ManagerPostAdDetail(View):
 				'msg_success' : msg_success,
 				'role': obj_account.role,
 			}
-			return render(request, 'managers/post-ad-detail.html', context)
+			return render(request, 'admin/post-ad-detail.html', context)
 
 		except:
 			return HttpResponsePermanentRedirect('/post-ad/')
 
 
-class ManagerAllPostAd(View):
+class AdminAllPostAd(View):
 	def get(self, request):
 		if not request.user.is_authenticated:
 			return HttpResponsePermanentRedirect('/logout/')
 		else:
 			obj_account = Account.objects.get(user=request.user)
-			if obj_account.role == 'user':
+			if obj_account.role != 'admin':
 				return HttpResponsePermanentRedirect('/logout/')
 
 		action = request.GET.get('action', None)
@@ -417,16 +499,102 @@ class ManagerAllPostAd(View):
 			'role': obj_account.role,
 		}
 
-		return render(request, 'managers/list-post-ads.html', context)
+		return render(request, 'admin/list-post-ads.html', context)
 
 
-class ManagerPostAdCreate(View):
+class AdminPostByUser(View):
 	def get(self, request):
 		if not request.user.is_authenticated:
 			return HttpResponsePermanentRedirect('/logout/')
 		else:
 			obj_account = Account.objects.get(user=request.user)
+			if obj_account.role != 'admin':
+				return HttpResponsePermanentRedirect('/logout/')
+
+		action = request.GET.get('action', None)
+		pk = request.GET.get('id', None)
+		msg_error = ""
+		message = ""
+		print(obj_account.role)
+		if action is not None:
+			if  pk is not None:
+				print('yes')
+				try:
+					obj_post_ad = AdPost.objects.get(id=pk)
+					obj_post_ad.delete()
+					message = "Delete As successfully!"
+				except:
+					msg_error="Delete Ad error!"
+					
+		list_ads_active = AdPost.objects.filter(is_active=True)
+
+		list_ads_user = []
+		for item in list_ads_active:
+			obj_account = Account.objects.get(user=item.created_by)
 			if obj_account.role == 'user':
+				list_ads_user.append(item)
+
+		print("******************")
+		print(list_ads_user)
+		print("******************")
+		context = {
+			'all_post_ads' : list_ads_user,
+			'msg_error': msg_error,
+			'message': message,
+		}
+		return render(request, 'admin/list-post-by-user.html', context)
+
+
+class AdminPostByManager(View):
+	def get(self, request):
+		if not request.user.is_authenticated:
+			return HttpResponsePermanentRedirect('/logout/')
+		else:
+			obj_account = Account.objects.get(user=request.user)
+			if obj_account.role != 'admin':
+				return HttpResponsePermanentRedirect('/logout/')
+
+		action = request.GET.get('action', None)
+		pk = request.GET.get('id', None)
+		msg_error = ""
+		message = ""
+		print(obj_account.role)
+		if action is not None:
+			if  pk is not None:
+				print('yes')
+				try:
+					obj_post_ad = AdPost.objects.get(id=pk)
+					obj_post_ad.delete()
+					message = "Delete As successfully!"
+				except:
+					msg_error="Delete Ad error!"
+
+		list_ads_active = AdPost.objects.filter(is_active=True)
+
+		list_ads_manager = []
+		for item in list_ads_active:
+			obj_account = Account.objects.get(user=item.created_by)
+			if obj_account.role == 'manager':
+				list_ads_manager.append(item)
+
+		print("******************")
+		print(list_ads_manager)
+		print("******************")
+		context = {
+			'all_post_ads' : list_ads_manager,
+			'msg_error': msg_error,
+			'message': message,
+		}
+		return render(request, 'admin/list-post-by-manager.html', context)
+
+
+class AdminPostAdCreate(View):
+	def get(self, request):
+		if not request.user.is_authenticated:
+			return HttpResponsePermanentRedirect('/logout/')
+		else:
+			obj_account = Account.objects.get(user=request.user)
+			if obj_account.role != 'admin':
 				return HttpResponsePermanentRedirect('/logout/')
 
 		msg_error= ""
@@ -442,14 +610,14 @@ class ManagerPostAdCreate(View):
 			'role': obj_account.role,
 		}
 
-		return render(request, 'managers/post-ad-create.html', context)
+		return render(request, 'admin/post-ad-create.html', context)
 
 	def post(self, request):
 		if not request.user.is_authenticated:
 			return HttpResponsePermanentRedirect('/logout/')
 		else:
 			obj_account = Account.objects.get(user=request.user)
-			if obj_account.role == 'user':
+			if obj_account.role != 'admin':
 				return HttpResponsePermanentRedirect('/logout/')
 		# try:
 		category = request.POST['category']
@@ -519,4 +687,126 @@ class ManagerPostAdCreate(View):
 			'role': obj_account.role,
 		}
 
-		return render(request, 'managers/post-ad-create.html', context)
+		return render(request, 'admin/post-ad-create.html', context)
+
+
+class ManagerCreateAd(View):
+	def get(self, request):
+		if not request.user.is_authenticated:
+			return HttpResponsePermanentRedirect('/logout/')
+		else:
+			obj_account = Account.objects.get(user=request.user)
+			if obj_account.role != 'manager':
+				return HttpResponsePermanentRedirect('/logout/')
+
+		msg_error= ""
+		message = ""
+		categories = Categories.objects.all()
+		locations = Location.objects.all()
+
+		context= {
+			'categories': categories,
+			'locations': locations,
+			'msg_error': msg_error,
+			'message' : message,
+			'role': obj_account.role,
+		}
+
+		return render(request, 'managers/create-ad.html', context)
+
+	def post(self, request):
+		if not request.user.is_authenticated:
+			return HttpResponsePermanentRedirect('/logout/')
+		else:
+			obj_account = Account.objects.get(user=request.user)
+			if obj_account.role != 'manager':
+				return HttpResponsePermanentRedirect('/logout/')
+		# try:
+		category = request.POST['category']
+		location = request.POST['location']
+
+		title = request.POST.get('title')
+		description = request.POST.get('description')
+		price_salary = request.POST.get('price_salary')
+		negotiable_price = request.POST.get('negotiable_price')
+		sell_name = request.POST.get('sell_name')
+		sell_email = request.POST.get('sell_email')
+		sel_phone_number = request.POST.get('sel_phone_number')
+		sell_hide_phone = request.POST.get('sell_hide_phone')
+		sell_terms = request.POST.get('sell_terms')
+
+		featured_image = request.FILES.getlist('featured_image')[0]
+		other_image = request.FILES.getlist('other_image')
+
+		category = Categories.objects.get(id=category)
+		location = Location.objects.get(id=location)
+
+		sell_info = SellerInformation(name=sell_name, email=sell_email, phone_number=sel_phone_number, location=location, created_by=request.user, updated_by=request.user)
+
+		if sell_hide_phone == 'on':
+			sell_info.hide_phone_number = True
+		else:
+			sell_info.hide_phone_number = False
+
+		if sell_terms == 'on':
+			sell_info.terms = True
+		else:
+			sell_info.terms = False
+
+		sell_info.save()
+
+
+		obj_ad = AdPost(title=title, category=category, location=location, description=description, price_salary=price_salary, seller=sell_info, featured_image=featured_image, created_by=request.user, updated_by=request.user)
+
+		if negotiable_price == 'on':
+			obj_ad.negotiable_price = True
+		else:
+			obj_ad.negotiable_price = False
+
+		# obj_ad.is_active = True
+		obj_ad.save()
+
+		if len(other_image) != 0:
+			for img in other_image:
+				ads_img = Ads_Image(image=img)
+				ads_img.save()
+
+		message = "Created Ad successfully!"
+		msg_error = ""
+			
+		# except:
+		# 	message = ""
+		# 	msg_error = "Created ad failed!"
+
+		categories = Categories.objects.all()
+		locations = Location.objects.all()
+
+		context = {
+			'message': message,
+			'msg_error': msg_error,
+			'locations': locations,
+			'categories': categories,
+			'role': obj_account.role,
+		}
+
+		return render(request, 'managers/create-ad.html', context)
+
+
+class ManagerMyAds(View):
+	def get(self, request):
+		msg_error= ""
+		message = ""
+		categories = Categories.objects.all()
+		locations = Location.objects.all()
+
+		list_ad_accept = AdPost.objects.filter(Q(created_by=request.user))
+
+		context= {
+			'categories': categories,
+			'locations': locations,
+			'msg_error': msg_error,
+			'message' : message,
+			'list_ad_accept': list_ad_accept,
+		}
+
+		return render(request, 'managers/my-ads.html', context)

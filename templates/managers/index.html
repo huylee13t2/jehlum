@@ -49,13 +49,25 @@
 
 <body>  
 
-	{% include 'layouts/header.html' %}
+	{% include 'managers/header.html' %}
 
-	{% block content %}
-	{% endblock %}
+	<div id="content">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-3 page-sideabr">
+					{% include 'managers/left-bar.html' %}
+				</div>
+				<div class="col-sm-9 page-content">
+					<div class="inner-box">
+						{% block manager-content %}
+						{% endblock %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
 	{% include 'layouts/footer.html' %}
-
 	
 </body>
 </html>

@@ -3,3 +3,11 @@
 	margin-bottom: 15px;
 	text-align: center;
 }
+#logo{
+	width: 80px;
+	display: inline-block;
+	background: url(../assets/img/logo.jpg) no-repeat left center;
+	height: 50px;
+	background-size: cover;
+	padding: 0;
+}

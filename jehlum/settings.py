@@ -168,3 +168,6 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'coderldh@gmail.com'
 EMAIL_HOST_PASSWORD = 'A123123Z'
 EMAIL_PORT = 587
+
+URL_SERVER = 'http://jehlum.pythonanywhere.com/'
+URL_LOCAL = 'http://localhost:8000/'

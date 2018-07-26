@@ -1,4 +1,4 @@
-{% extends 'managers/home.html' %}
+{% extends 'admin/home.html' %}
 
 {% load staticfiles %}
 
@@ -24,7 +24,7 @@
 					</a>
 				</td>
 				<td class="ads-details-td">
-					<h4><a href="/managers/post-ad-accept/{{ item.id }}">{{ item.title }}</a></h4>
+					<h4><a href="/admin/post-ad-accept/{{ item.id }}">{{ item.title }}</a></h4>
 					<p> <strong> Posted On </strong>: {{ item.updated | date:"M d, Y" }} </p>
 					<p> <strong>Visitors </strong>: 221 <strong>Located In:</strong> {{ item.location.title }} </p>
 					<p>By: {{ item.created_by.user.username }}</p>

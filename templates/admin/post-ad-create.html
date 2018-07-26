@@ -1,10 +1,10 @@
-{% extends 'managers/home.html' %}
+{% extends 'admin/home.html' %}
 
 {% load staticfiles %}
 
 {% block sub-content %}
 
-<form method="POST" action="/managers/post-ad-create/" enctype="multipart/form-data">
+<form method="POST" action="/admin/post-ad-create/" enctype="multipart/form-data">
 	{% if message != "" %}
 	<div class="alert alert-success">
 		{{ message }}
@@ -77,14 +77,14 @@
 			<div class="form-group mb30 clearfix">
 				<label class="control-label" for="textarea">Price / Salary</label>
 				<div class="form-inline">
-					<div class="form-group col-md-3 col-sm-5 col-xs-12 is-empty">
+					<div class="form-group col-sm-6 col-xs-12 is-empty">
 						<div class="input-group">
 							<span class="input-group-addon addon">$</span>
 							<input class="form-control" name="price_salary" id="price" placeholder="Item Price" type="text"/>
 						</div>
 						<span class="material-input"></span>
 					</div>
-					<div class="col-md-2 col-sm-3 col-xs-12 checkbox form-control-static">
+					<div class="col-sm-6 col-xs-12 checkbox form-control-static">
 						<label>
 							<input type="checkbox" name="negotiable_price"/>
 							<span class="checkbox-material"></span>Negotiable

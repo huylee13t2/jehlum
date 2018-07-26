@@ -1,4 +1,4 @@
-{% extends 'managers/home.html' %}
+{% extends 'admin/home.html' %}
 
 {% load staticfiles %}
 
@@ -60,9 +60,9 @@
 	</div>
 	<div class="col-md-12" style="border-top: 1px solid #ddd; padding-top: 15px;">
 		{% if item.is_active == False %}
-		<a href="/managers/post-ad-accept/{{ item.id }}?action=accept" class="btn btn-success"><i class="fa fa-check"></i>Accept</a>
+		<a href="/admin/post-ad-accept/{{ item.id }}?action=accept" class="btn btn-success"><i class="fa fa-check"></i>Accept</a>
 		{% endif %}
-		<a href="/managers/post-ad-accept/post-ad/{{ item.id }}?action=delete" class="btn btn-danger pull-right"><i class="fa fa-trash"></i>Delete</a>
+		<a href="/admin/post-ad-accept/post-ad/{{ item.id }}?action=delete" class="btn btn-danger pull-right"><i class="fa fa-trash"></i>Delete</a>
 	</div>
 </div>
 
