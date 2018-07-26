@@ -170,4 +170,5 @@ EMAIL_HOST_PASSWORD = 'A123123Z'
 EMAIL_PORT = 587
 
 URL_SERVER = 'http://jehlum.pythonanywhere.com/'
-URL_LOCAL = 'http://localhost:8000/'
+URL_LOCAL = 'http://jehlum.pythonanywhere.com/'
+# URL_LOCAL = 'http://localhost:8000/'
