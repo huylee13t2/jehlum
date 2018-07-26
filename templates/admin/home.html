@@ -1,23 +1,74 @@
-{% extends 'base.html' %}
 {% load staticfiles %}
 
-{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">    
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<meta name="author" content="Clasified">
+	<meta name="generator" content="Wordpress! - Open Source Content Management">
+	<title>Jehlum</title>    
 
-<div id="content">
-	<div class="container">
-		<div class="row">
-			<div class="col-sm-3 page-sideabr">
-				{% include 'admin/left-bar.html' %}
-			</div>
-			<div class="col-sm-9 page-content">
-				<div class="inner-box">
-					{% block sub-content %}
+	<!-- Favicon -->
+	<link rel="shortcut icon" href="{% static './assets/img/favicon.jpg' %}">
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="{% static './assets/css/bootstrap.min.css' %}" type="text/css">    
+	<link rel="stylesheet" href="{% static './assets/css/jasny-bootstrap.min.css' %}" type="text/css">    
+	<link rel="stylesheet" href="{% static './assets/css/jasny-bootstrap.min.css' %}" type="text/css">
+	<!-- Material CSS -->
+	<link rel="stylesheet" href="{% static './assets/css/material-kit.css' %}" type="text/css">
+	<!-- Font Awesome CSS -->
+	<link rel="stylesheet" href="{% static './assets/css/font-awesome.min.css' %}" type="text/css">
+	<!-- Line Icons CSS -->
+	<link rel="stylesheet" href="{% static './assets/fonts/line-icons/line-icons.css' %}" type="text/css">
+	<!-- Line Icons CSS -->
+	<link rel="stylesheet" href="{% static './assets/fonts/line-icons/line-icons.css' %}" type="text/css">
+	<!-- Main Styles -->
+	<link rel="stylesheet" href="{% static './assets/css/main.css' %}" type="text/css">
+	<!-- Animate CSS -->
+	<link rel="stylesheet" href="{% static './assets/extras/animate.css' %}" type="text/css">
+	<!-- Owl Carousel -->
+	<link rel="stylesheet" href="{% static './assets/extras/owl.carousel.css' %}" type="text/css">
+	<link rel="stylesheet" href="{% static './assets/extras/owl.theme.css' %}" type="text/css">    
+	<!-- Responsive CSS Styles -->
+	<link rel="stylesheet" href="{% static './assets/css/responsive.css' %}" type="text/css">
+	<!-- Slicknav js -->
+	<link rel="stylesheet" href="{% static './assets/css/slicknav.css' %}" type="text/css">
+	<!-- Bootstrap Select -->
+	<link rel="stylesheet" href="{% static './assets/css/bootstrap-select.min.css' %}">
+	<!-- styles css -->
+	<!-- <link href="http://demo.graygrids.com/themes/classix-demo/assets/extras/settings.css" rel="stylesheet" type="text/css"> -->
+	<link href="{% static './assets/extras/settings.css' %}" rel="stylesheet" type="text/css">
+	<!-- <link href="http://demo.graygrids.com/themes/classix-demo/assets/css/fileinput.css" rel="stylesheet"> -->
+	<link href="{% static './assets/css/fileinput.css' %}" rel="stylesheet">
+	<link rel="stylesheet" href="{% static './styles/custom.css' %}">
 
-					{% endblock %}
+</head>
+
+<body>  
+
+	{% include 'managers/header.html' %}
+
+	<div id="content">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-3 page-sideabr">
+					{% include 'admin/left-bar.html' %}
+				</div>
+				<div class="col-sm-9 page-content">
+					<div class="inner-box">
+						{% block sub-content %}
+
+						{% endblock %}
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
 
-{% endblock %}
+	{% include 'layouts/footer.html' %}
+	
+</body>
+</html>
