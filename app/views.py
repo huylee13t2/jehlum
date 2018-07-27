@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponsePermanentRedirect
 from django.views import View
@@ -235,6 +236,7 @@ class Profile(View):
 
 # *****************************************
 # *****************  User *****************
+
 class MyPostAd(View):
     def get(self, request):
         msg_error = ""

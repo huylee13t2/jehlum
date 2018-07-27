@@ -20,7 +20,9 @@
       <!-- Navbar Start -->
       <div class="collapse navbar-collapse" id="navbar">
         <ul class="nav navbar-nav">
+            {% if user.is_authanticated %}
           <li><a href="/my-ads">My Ads</a></li>
+            {% endif %}
           <li><a href="/browse-ads">Browse Ads</a></li>
           <li><a href="#">Browse Jobs</a></li>
           <li><a href="#">Notifications</a></li>
